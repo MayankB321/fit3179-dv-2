@@ -2,41 +2,12 @@ import { ATHLETE_EVENTS_SOURCE } from "./data.js";
 import { story } from "./story.js";
 import { withTheme } from "./theme.js";
 
-const shell = document.querySelector(".shell");
-const nav = document.querySelector("#nav");
 const main = document.querySelector("#story");
-const navToggle = document.querySelector("#nav-toggle");
-const navBackdrop = document.querySelector("#nav-backdrop");
-const views = new Map();
-const overlayQuery = window.matchMedia("(max-width: 860px)");
 
 document.title = `${story.title} · Age and Olympic performance`;
 
-renderNav();
 renderStory();
 mountCharts();
-watchCurrentChapter();
-bindNavToggle();
-
-function renderNav() {
-  const label = document.createElement("p");
-  label.className = "nav-label";
-  label.textContent = "Charts";
-  nav.append(label);
-
-  for (const chapter of story.chapters) {
-    const link = document.createElement("a");
-    link.href = `#${chapter.id}`;
-    link.dataset.target = chapter.id;
-    const num = document.createElement("span");
-    num.className = "nav-num";
-    num.textContent = chapter.number;
-    const name = document.createElement("span");
-    name.textContent = chapter.nav;
-    link.append(num, name);
-    nav.append(link);
-  }
-}
 
 function renderStory() {
   const header = document.createElement("header");
@@ -50,15 +21,7 @@ function renderStory() {
   const title = document.createElement("h1");
   title.textContent = story.title;
 
-  const dek = document.createElement("p");
-  dek.className = "dek";
-  dek.textContent = story.dek;
-
-  const legend = document.createElement("p");
-  legend.className = "legend";
-  legend.append(swatch("summer", "Summer"), swatch("winter", "Winter"));
-
-  header.append(eyebrow, title, dek, legend);
+  header.append(eyebrow, title);
 
   const chapters = document.createElement("div");
   chapters.className = "chapters";
@@ -164,8 +127,7 @@ async function mountOne(chapter) {
     if (typeof vegaEmbed !== "function") {
       throw new Error("vegaEmbed did not load. Check the Vega script tags.");
     }
-    const result = await vegaEmbed(frame, spec, { actions: false, renderer: "svg", hover: true });
-    views.set(chapter.id, result.view);
+    await vegaEmbed(frame, spec, { actions: false, renderer: "svg", hover: true });
   } catch (error) {
     slot.replaceChildren();
     const fail = document.createElement("p");
@@ -186,47 +148,3 @@ async function resolveSpec(spec) {
   return response.json();
 }
 
-function watchCurrentChapter() {
-  const links = [...nav.querySelectorAll("a")];
-  const sections = story.chapters
-    .map((chapter) => document.getElementById(chapter.id))
-    .filter(Boolean);
-
-  const mark = () => {
-    const line = window.innerHeight * 0.32;
-    let current = sections[0];
-    for (const section of sections) {
-      if (section.getBoundingClientRect().top <= line) current = section;
-    }
-    for (const link of links) {
-      link.classList.toggle("is-current", link.dataset.target === current?.id);
-    }
-  };
-
-  mark();
-  window.addEventListener("scroll", mark, { passive: true });
-}
-
-function bindNavToggle() {
-  navToggle.addEventListener("click", () => {
-    setNavOpen(navToggle.getAttribute("aria-expanded") !== "true");
-  });
-  navBackdrop.addEventListener("click", () => setNavOpen(false));
-  overlayQuery.addEventListener("change", syncBackdrop);
-}
-
-function setNavOpen(open) {
-  shell.classList.toggle("is-nav-closed", !open);
-  navToggle.setAttribute("aria-expanded", String(open));
-  navToggle.setAttribute("aria-label", open ? "Hide chart list" : "Show chart list");
-  nav.toggleAttribute("inert", !open);
-  syncBackdrop();
-  requestAnimationFrame(() => {
-    for (const view of views.values()) view.resize();
-  });
-}
-
-function syncBackdrop() {
-  const open = navToggle.getAttribute("aria-expanded") === "true";
-  navBackdrop.hidden = !open || !overlayQuery.matches;
-}

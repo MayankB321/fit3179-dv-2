@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "How Old Are the Medallists, Sport by Sport?",
+    "subtitle": "Ages of medal-winning athlete-events. Sports with 300+ medals, sorted by median age"
+  },
+  "width": 600,
+  "height": {"step": 20},
+  "data": {
+    "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv",
+    "format": {"type": "csv", "parse": {"Age": "number"}}
+  },
+  "transform": [
+    {"filter": "isValid(datum.Age) && datum.Age >= 10 && datum.Age <= 80"},
+    {"filter": "datum.Medal != null && datum.Medal != 'NA' && datum.Medal != '' && datum.Sport != 'Art Competitions'"},
+    {"joinaggregate": [{"op": "count", "as": "SportMedals"}], "groupby": ["Sport"]},
+    {"filter": "datum.SportMedals >= 300"}
+  ],
+  "mark": {
+    "type": "boxplot",
+    "extent": "min-max",
+    "size": 13,
+    "color": "#E28E2C",
+    "median": {"color": "#1B1714", "strokeWidth": 2},
+    "rule": {"color": "#9CA3AF"}
+  },
+  "encoding": {
+    "y": {
+      "field": "Sport",
+      "type": "nominal",
+      "title": null,
+      "sort": {"op": "median", "field": "Age", "order": "ascending"},
+      "axis": {"labelFontSize": 12, "ticks": false, "domain": false}
+    },
+    "x": {
+      "field": "Age",
+      "type": "quantitative",
+      "title": "Medallist age (years)",
+      "scale": {"domain": [10, 75]}
+    }
+  },
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"gridColor": "#E5E7EB", "labelFontSize": 12, "titleFontSize": 13},
+    "title": {"fontSize": 19, "subtitleFontSize": 12, "anchor": "start"}
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Do Women and Men Peak at the Same Age?",
+    "subtitle": "Medal-winning rate by age and sex (2-year bins with 100+ records, art competitions excluded)"
+  },
+  "width": 600,
+  "height": 340,
+  "data": {
+    "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv",
+    "format": {"type": "csv", "parse": {"Age": "number"}}
+  },
+  "params": [
+    {
+      "name": "season",
+      "value": "Both",
+      "bind": {"input": "radio", "options": ["Both", "Summer", "Winter"], "name": "Season: "}
+    }
+  ],
+  "transform": [
+    {"filter": "isValid(datum.Age) && datum.Age >= 10 && datum.Age <= 80 && datum.Sport != 'Art Competitions'"},
+    {"filter": "season == 'Both' || datum.Season == season"},
+    {"calculate": "datum.Medal != null && datum.Medal != 'NA' && datum.Medal != '' ? 1 : 0", "as": "MedalWon"},
+    {"calculate": "datum.Sex == 'F' ? 'Women' : 'Men'", "as": "SexLabel"},
+    {"bin": {"step": 2}, "field": "Age", "as": "AgeBin"},
+    {
+      "aggregate": [
+        {"op": "mean", "field": "MedalWon", "as": "Rate"},
+        {"op": "count", "as": "Entries"}
+      ],
+      "groupby": ["AgeBin", "AgeBin_end", "SexLabel"]
+    },
+    {"filter": "datum.Entries >= 100"}
+  ],
+  "mark": {"type": "line", "point": {"filled": true}, "interpolate": "monotone"},
+  "encoding": {
+    "x": {"field": "AgeBin", "type": "quantitative", "title": "Age (years)", "scale": {"domain": [10, 60]}},
+    "y": {"field": "Rate", "type": "quantitative", "title": "Medal-winning rate", "axis": {"format": ".0%"}},
+    "color": {
+      "field": "SexLabel",
+      "type": "nominal",
+      "title": "Sex",
+      "scale": {"domain": ["Women", "Men"], "range": ["#8E4C9E", "#2E7D6B"]}
+    },
+    "tooltip": [
+      {"field": "SexLabel", "type": "nominal", "title": "Sex"},
+      {"field": "AgeBin", "type": "quantitative", "title": "Age from"},
+      {"field": "AgeBin_end", "type": "quantitative", "title": "Age to (excl.)"},
+      {"field": "Rate", "type": "quantitative", "title": "Medal-winning rate", "format": ".1%"},
+      {"field": "Entries", "type": "quantitative", "title": "Records", "format": ","}
+    ]
+  },
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"gridColor": "#E5E7EB", "labelFontSize": 12, "titleFontSize": 13},
+    "title": {"fontSize": 19, "subtitleFontSize": 12, "anchor": "start"}
+  }
+}

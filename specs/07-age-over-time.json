@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Has the Typical Olympian Got Older?",
+    "subtitle": "Median athlete age per Games, with the middle 50% of ages shaded (art competitions excluded)"
+  },
+  "width": 600,
+  "height": 340,
+  "data": {
+    "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv",
+    "format": {"type": "csv", "parse": {"Age": "number", "Year": "number"}}
+  },
+  "transform": [
+    {"filter": "isValid(datum.Age) && datum.Age >= 10 && datum.Age <= 80 && datum.Sport != 'Art Competitions'"},
+    {
+      "aggregate": [
+        {"op": "median", "field": "Age", "as": "MedianAge"},
+        {"op": "q1", "field": "Age", "as": "Q1"},
+        {"op": "q3", "field": "Age", "as": "Q3"},
+        {"op": "count", "as": "Entries"}
+      ],
+      "groupby": ["Year", "Season"]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "quantitative",
+      "title": "Games year",
+      "scale": {"domain": [1896, 2016]},
+      "axis": {"format": "d", "tickMinStep": 4}
+    },
+    "color": {
+      "field": "Season",
+      "type": "nominal",
+      "title": "Olympic season",
+      "scale": {"domain": ["Summer", "Winter"], "range": ["#E28E2C", "#2878B5"]}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "area", "opacity": 0.16, "interpolate": "monotone"},
+      "encoding": {
+        "y": {"field": "Q1", "type": "quantitative", "title": "Athlete age (years)", "scale": {"domain": [15, 35]}},
+        "y2": {"field": "Q3"}
+      }
+    },
+    {
+      "mark": {"type": "line", "point": {"filled": true, "size": 36}, "interpolate": "monotone"},
+      "encoding": {
+        "y": {"field": "MedianAge", "type": "quantitative"}
+      }
+    },
+    {
+      "params": [
+        {"name": "hoverYear", "select": {"type": "point", "fields": ["Year"], "on": "pointerover", "nearest": true, "clear": "pointerout"}}
+      ],
+      "mark": {"type": "point", "opacity": 0, "size": 120},
+      "encoding": {
+        "y": {"field": "MedianAge", "type": "quantitative"},
+        "tooltip": [
+          {"field": "Year", "type": "quantitative", "title": "Games", "format": "d"},
+          {"field": "Season", "type": "nominal"},
+          {"field": "MedianAge", "type": "quantitative", "title": "Median age", "format": ".1f"},
+          {"field": "Q1", "type": "quantitative", "title": "25th percentile", "format": ".1f"},
+          {"field": "Q3", "type": "quantitative", "title": "75th percentile", "format": ".1f"},
+          {"field": "Entries", "type": "quantitative", "title": "Athlete-event records", "format": ","}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": {"param": "hoverYear", "empty": false}}],
+      "mark": {"type": "rule", "color": "#9CA3AF", "strokeDash": [3, 3]},
+      "encoding": {"x": {"field": "Year", "type": "quantitative"}}
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"gridColor": "#E5E7EB", "labelFontSize": 12, "titleFontSize": 13},
+    "title": {"fontSize": 19, "subtitleFontSize": 12, "anchor": "start"}
+  }
+}

@@ -6,8 +6,8 @@
  */
 
 export const story = {
-  title: "Peak Years",
-  dek: "How old Olympic athletes are, and when age lines up with a medal. Fifteen charts, from 1896 to 2016. The first three are live.",
+  title: "Peak Years: Player Age and Performance",
+  dek: "How old Olympic athletes are, and when age lines up with a medal. Nine charts, from 1896 to 2016.",
   chapters: [
     {
       number: "01",
@@ -44,138 +44,69 @@ export const story = {
     },
     {
       number: "04",
-      id: "early-peaks",
-      kicker: "Early peaks",
-      nav: "Early peaks",
-      heading: "A few sports are mostly over by 25",
+      id: "country-medal-rate",
+      kicker: "By country",
+      nav: "Medals by country",
+      heading: "Where an athlete is from changes what age pays off",
       prose:
-        "Gymnastics, diving, swimming, and figure skating load the young end of the first chart. Isolate them so the early peak is visible on its own scale.",
-      intent:
-        "Age distribution, or medal rate by age, for a small set of early-peak sports. Small multiples on one shared age scale.",
-      spec: "specs/04-country-medal-wins.json"
+        "The medal rate by age is not the same everywhere. Pick an age group and the map shades each country by the share of its athlete-event records in that group that won a medal. Some countries convert young athletes into medals. Others do it with experienced ones.",
+      note: "Grey means no data, or the country name did not match between the map and the dataset. Small teams can show extreme rates from a few results.",
+      spec: "specs/04-country-medal-wins.json",
     },
     {
       number: "05",
-      id: "late-peaks",
-      kicker: "Late peaks",
-      nav: "Late peaks",
-      heading: "Other sports start in earnest after 30",
+      id: "sport-age-heatmap",
+      kicker: "By sport",
+      nav: "Sport × age",
+      heading: "Each sport rewards a different age group",
       prose:
-        "Equestrian, shooting, sailing, and archery sit in the right tail. They are not noise in the histogram. They are different careers.",
-      intent:
-        "Same treatment as chart 04, for late-peak sports. Small multiples against the same age scale.",
-      spec: "specs/05-ages-medals-heatmap.json"
+        "Twelve major sports, four age groups. Each tile is the share of entries that won a medal. Read across a row to see which sports pay off early and which still pay off past 30. The overall curve in chart 03 is these sports, and others, averaged together.",
+      note: "Tiles with fewer than 30 entries are left blank.",
+      spec: "specs/05-ages-medals-heatmap.json",
     },
     {
       number: "06",
-      id: "medal-rate",
-      kicker: "Medal rate",
-      nav: "Medal rate",
-      heading: "Showing up and winning are different curves",
+      id: "country-appearances",
+      kicker: "Who sends whom",
+      nav: "Athletes by country",
+      heading: "Medal rates mean more when the team is large",
       prose:
-        "Chart 01 is participation. Performance is the share of those rows that end with a medal. If the medal rate peaks at a different age than the headcount, the field and the podium are not the same age.",
-      intent:
-        "Medal rate by age bin: medal rows divided by all rows. Bar or line. Optional split by season.",
-      spec: "specs/06-proportional-athlete-count.json"
+        "A high medal rate in chart 04 means more when it is backed by a large team. Each circle is one country's athlete-event appearances in the chosen age group. Switch groups to see which countries still send older athletes, and which bring mostly young ones.",
+      note: "Circle area, not radius, scales with appearances. Circles sit at country centroids.",
+      spec: "specs/06-proportional-athlete-count.json",
     },
     {
       number: "07",
-      id: "gold-vs-field",
-      kicker: "Gold versus the field",
-      nav: "Gold vs field",
-      heading: "Gold sits inside the crowd, then drifts",
-      prose:
-        "A rate can hide shape. Overlay the age distribution of gold-medal rows on the age distribution of every row. The question is whether gold is a narrower, older, or younger slice of the same field.",
-      intent:
-        "Two densities or normalized histograms: all athlete-events, and gold only.",
-    },
-    {
-      number: "08",
       id: "age-over-time",
       kicker: "Across a century",
       nav: "Over time",
-      heading: "The typical Olympian did not stay the same age",
+      heading: "The Olympian got younger, then older again",
       prose:
-        "The first chart collapses 120 years. Median age by Games shows whether the field got younger as the Olympics changed, and whether Summer and Winter moved together.",
-      intent:
-        "Line chart. X is Games year, y is median age. Two lines, Summer and Winter. Mark years where the field is thin.",
+        "The first six charts collapse 120 years into one picture. Here is each Games on its own. Leaving art competitions out, the median Summer athlete was 27–28 in the early Games and 23 by the late 1970s and 1980s. By 2016 it was back to 26. Winter shows the same dip and recovery. The shaded band is the middle half of ages at each Games.",
+      note: "Hover a Games to compare seasons. Early Games had small fields, so their medians move more.",
+      spec: "specs/07-age-over-time.json",
+    },
+    {
+      number: "08",
+      id: "medallist-age-by-sport",
+      kicker: "Who wins",
+      nav: "Medallist ages",
+      heading: "The podium's age is set by the sport",
+      prose:
+        "Only medal-winning results, one row per sport. Median medallist age ranges from 21 in swimming to 34 in equestrian. Shooting and sailing medallists are typically past 30. Diving, gymnastics, and figure skating medallists are mostly in their early twenties or younger. The whiskers show how far each sport stretches.",
+      note: "Sports with fewer than 300 medals are left out. Team events count every medal-winning team member.",
+      spec: "specs/08-medallist-age-by-sport.json",
     },
     {
       number: "09",
-      id: "age-by-sex",
+      id: "medal-rate-by-sex",
       kicker: "Women and men",
       nav: "By sex",
-      heading: "The women’s field is not the same age",
+      heading: "Women's medal odds peak higher and later",
       prose:
-        "Sex is mixed into every chart above. Women’s events were added later, and in different sports, so the age profile can differ even when the overall histogram looks smooth.",
-      intent:
-        "Age distribution by sex, or median age over time with one line per sex. Keep the season in view so Winter’s small counts do not dominate.",
-    },
-    {
-      number: "10",
-      id: "repeat-starts",
-      kicker: "Repeat starts",
-      nav: "Careers",
-      heading: "Longevity is what stretches the right tail",
-      prose:
-        "A 38-year-old on the start list is often not a late bloomer. They are someone who has already been here. Separate first-time Olympians from athletes at a later Games.",
-      intent:
-        "For athletes with two or more Games, age at the first Games versus age at the last. Scatter or slope chart, aggregated enough to stay readable.",
-    },
-    {
-      number: "11",
-      id: "extremes",
-      kicker: "The tails",
-      nav: "Extremes",
-      heading: "The youngest and oldest results are specific people",
-      prose:
-        "Bins hide the names at the edge. A short view of the youngest and oldest medalists makes the tail concrete: which sports, which Games, which ages.",
-      intent:
-        "Two ranked lists or a dot plot: youngest medalists and oldest medalists. Sport, year, age, and medal.",
-    },
-    {
-      number: "12",
-      id: "inside-one-sport",
-      kicker: "Inside one sport",
-      nav: "One sport",
-      heading: "Event choice moves the peak even inside a sport",
-      prose:
-        "Swimming is not one age. Sprints, distance, and open water do not peak together. Hold the sport still and let the event vary.",
-      intent:
-        "One sport with many events, swimming or athletics. Age distribution or median age by event, sorted.",
-    },
-    {
-      number: "13",
-      id: "winter-alone",
-      kicker: "Winter, alone",
-      nav: "Winter",
-      heading: "Winter sports do not share one age",
-      prose:
-        "Inside Winter, alpine skiing, skating, hockey, and curling pull in different directions. Show them without Summer in the frame.",
-      intent:
-        "Median age or distribution by Winter sport.",
-    },
-    {
-      number: "14",
-      id: "after-thirty",
-      kicker: "After 30",
-      nav: "After 30",
-      heading: "Most sports thin out once athletes pass 30",
-      prose:
-        "Thirty sits just past the bulk of the first chart. The share of a sport’s records at 30 and older is a simple measure of who is still competing.",
-      intent:
-        "Horizontal bar, one row per sport. Value is the share of records with age 30 or older. Sort descending. Drop sports below a minimum record count.",
-    },
-    {
-      number: "15",
-      id: "medal-windows",
-      kicker: "Medal windows",
-      nav: "Windows",
-      heading: "Each sport has an age band where medals actually land",
-      prose:
-        "This is the claim the earlier charts build toward. Not the age people show up. The age band that holds the medals, sport by sport.",
-      intent:
-        "Heatmap or interval bars. Rows are major sports, columns are age bands, colour is medal count. Mark the peak band.",
+        "The same filtered medal rate as chart 03, split by sex. Women's rate climbs to about 19% at 26–31, then falls away. Men's rate levels off near 16% from the mid-20s into the early 30s. Past 40 it gets noisy, driven by long-career sports such as shooting and equestrian. Use the season toggle to compare Summer and Winter.",
+      note: "Two-year bins with fewer than 100 records are hidden, so the women's line stops earlier.",
+      spec: "specs/09-medal-rate-by-sex.json",
     },
   ],
 };

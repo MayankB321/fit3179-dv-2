@@ -1,6 +1,6 @@
 # Peak Years
 
-Single-page storyboard for FIT3179. Age against performance at the Olympic Games, 1896–2016. Charts are Vega-Lite. Chapters 01–03 are live. Chapters 04–15 are placeholders.
+Single-page storyboard for FIT3179. Age against performance at the Olympic Games, 1896–2016. Charts are Vega-Lite. Nine chapters, all live.
 
 Open it through a local server. `file://` blocks the spec fetch and the athlete CSV.
 
