@@ -1,0 +1,71 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "Where Do Olympic Athletes Come From?",
+      "subtitle": "Athlete-event appearances by country and age group"
+    },
+    "width": 800,
+    "height": 430,
+    "params": [
+      {
+        "name": "ageGroup",
+        "value": "Age25_29",
+        "bind": {
+          "input": "select",
+          "options": ["Under20", "Age20_24", "Age25_29", "Age30Plus"],
+          "labels": ["Under 20", "20–24", "25–29", "30+"],
+          "name": "Select age group: "
+        }
+      }
+    ],
+    "projection": {"type": "equalEarth"},
+    "layer": [
+      {
+        "data": {
+          "url": "https://cdn.jsdelivr.net/npm/vega-datasets@3/data/world-110m.json",
+          "format": {"type": "topojson", "feature": "countries"}
+        },
+        "mark": {"type": "geoshape", "fill": "#eeeeee", "stroke": "white", "strokeWidth": 0.4}
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/MayankB321/fit3179-dv-2-datasets/main/datasets/country_athlete_counts.csv",
+          "format": {
+            "type": "csv",
+            "parse": {
+              "longitude": "number",
+              "latitude": "number",
+              "Under20": "number",
+              "Age20_24": "number",
+              "Age25_29": "number",
+              "Age30Plus": "number"
+            }
+          }
+        },
+        "transform": [
+          {"calculate": "toNumber(datum[ageGroup])", "as": "Appearances"}
+        ],
+        "mark": {"type": "circle", "opacity": 0.7, "stroke": "white", "strokeWidth": 0.5},
+        "encoding": {
+          "longitude": {"field": "longitude", "type": "quantitative"},
+          "latitude": {"field": "latitude", "type": "quantitative"},
+          "size": {
+            "field": "Appearances",
+            "type": "quantitative",
+            "scale": {"type": "sqrt", "range": [10, 1800]},
+            "legend": {
+              "title": "Athlete-event appearances",
+              "format": ",.0f"
+            }
+          },
+          "order": {"field": "Appearances", "sort": "descending"},
+          "color": {"value": "#2471a3"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country"},
+            {"field": "Appearances", "type": "quantitative", "title": "Athlete-event appearances", "format": ","}
+          ]
+        }
+      }
+    ],
+    "config": {"view": {"stroke": null}}
+  }

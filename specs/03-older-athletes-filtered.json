@@ -1,0 +1,46 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "Are Older Athletes More Successful?",
+      "subtitle": "Medal-winning rate by age (bins with 100+ records, art competitions excluded)"
+    },
+    "data": {
+      "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv"
+    },
+    "transform": [
+      {"calculate": "toNumber(datum.Age)", "as": "AgeNum"},
+      {"filter": "isValid(datum.AgeNum) && datum.AgeNum >= 10 && datum.AgeNum <= 80 && datum.Sport != 'Art Competitions'"},
+      {"calculate": "datum.Medal == 'NA' || datum.Medal == null ? 0 : 1", "as": "MedalWon"},
+      {"bin": {"step": 2}, "field": "AgeNum", "as": "AgeBin"},
+      {
+        "aggregate": [
+          {"op": "mean", "field": "MedalWon", "as": "rate"},
+          {"op": "count", "as": "n"}
+        ],
+        "groupby": ["AgeBin", "AgeBin_end", "Season"]
+      },
+      {"filter": "datum.n >= 100"}
+    ],
+    "mark": {"type": "line", "point": true},
+    "width": 600,
+    "height": 350,
+    "encoding": {
+      "x": {"field": "AgeBin", "type": "quantitative", "title": "Age (years)"},
+      "y": {"field": "rate", "type": "quantitative", "title": "Medal-winning rate", "axis": {"format": ".0%"}},
+      "color": {
+        "field": "Season",
+        "type": "nominal",
+        "title": "Olympic season",
+        "scale": {
+          "domain": ["Summer", "Winter"],
+          "range": ["#E28E2C", "#2878B5"]
+        }
+      },
+      "tooltip": [
+        {"field": "Season", "type": "nominal"},
+        {"field": "AgeBin", "type": "quantitative", "title": "Age from"},
+        {"field": "rate", "type": "quantitative", "format": ".1%", "title": "Medal rate"},
+        {"field": "n", "type": "quantitative", "title": "Records"}
+      ]
+    }
+  }

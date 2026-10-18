@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Peak Years · Age and Olympic performance</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23E28E2C'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  </head>
+  <body>
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-controls="nav" aria-expanded="true" aria-label="Hide chart list">
+      <span class="nav-toggle-icon" aria-hidden="true"></span>
+    </button>
+    <button type="button" id="nav-backdrop" class="nav-backdrop" hidden aria-label="Close chart list"></button>
+    <div class="shell">
+      <nav id="nav" class="nav" aria-label="Charts"></nav>
+      <main id="story" class="story"></main>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

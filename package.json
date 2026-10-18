@@ -1,0 +1,12 @@
+{
+  "name": "fit3179-dv-2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "serve . --listen 3000 --no-clipboard",
+    "start": "serve . --listen 3000 --no-clipboard"
+  },
+  "devDependencies": {
+    "serve": "^14.2.5"
+  }
+}

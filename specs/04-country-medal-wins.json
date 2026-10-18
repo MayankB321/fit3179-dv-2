@@ -1,0 +1,55 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "Where Do Athletes Win Medals?",
+      "subtitle": "Medal-winning rate by country and athlete age group (grey = no data or unmatched name)"
+    },
+    "width": 800,
+    "height": 430,
+    "params": [
+      {
+        "name": "ageGroup",
+        "value": "Age25_29",
+        "bind": {
+          "input": "select",
+          "options": ["Under20", "Age20_24", "Age25_29", "Age30Plus"],
+          "labels": ["Under 20", "20–24", "25–29", "30+"],
+          "name": "Select age group: "
+        }
+      }
+    ],
+    "data": {
+      "url": "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    "transform": [
+      {
+        "lookup": "properties.name",
+        "from": {
+          "data": {
+            "url": "https://raw.githubusercontent.com/MayankB321/fit3179-dv-2-datasets/main/datasets/country_medal_rates.csv",
+            "format": {"type": "csv"}
+          },
+          "key": "Country",
+          "fields": ["Under20", "Age20_24", "Age25_29", "Age30Plus"]
+        }
+      },
+      {"calculate": "datum[ageGroup]", "as": "MedalRate"}
+    ],
+    "projection": {"type": "equalEarth"},
+    "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 0.3},
+    "encoding": {
+      "color": {
+        "condition": {"test": "!isValid(datum.MedalRate)", "value": "#e0e0e0"},
+        "field": "MedalRate",
+        "type": "quantitative",
+        "scale": {"scheme": "blues", "zero": true},
+        "legend": {"title": "Medal-winning rate", "format": ".0%"}
+      },
+      "tooltip": [
+        {"field": "properties.name", "type": "nominal", "title": "Country"},
+        {"field": "MedalRate", "type": "quantitative", "title": "Medal-winning rate", "format": ".1%"}
+      ]
+    },
+    "config": {"view": {"stroke": null}}
+  }

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "At What Age Do Olympic Athletes Compete?",
+    "subtitle": "Distribution of athlete-event records (1896–2016)"
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.Age) && datum.Age >= 10 && datum.Age <= 80"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "binSpacing": 0
+  },
+  "width": 600,
+  "height": 350,
+  "encoding": {
+    "x": {
+      "field": "Age",
+      "type": "quantitative",
+      "bin": {
+        "step": 2,
+        "extent": [10, 80]
+      },
+      "title": "Athlete age (years)",
+      "axis": {
+        "tickMinStep": 5
+      }
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative",
+      "title": "Number of athlete-event records",
+      "axis": {
+        "format": "~s"
+      }
+    },
+    "color": {
+      "field": "Season",
+      "type": "nominal",
+      "title": "Olympic season",
+      "scale": {
+        "domain": ["Summer", "Winter"],
+        "range": ["#E28E2C", "#2878B5"]
+      }
+    },
+    "tooltip": [
+      {
+        "field": "Season",
+        "type": "nominal",
+        "title": "Season"
+      },
+      {
+        "field": "Age",
+        "type": "quantitative",
+        "bin": {
+          "step": 2,
+          "extent": [10, 80]
+        },
+        "title": "Age range"
+      },
+      {
+        "aggregate": "count",
+        "type": "quantitative",
+        "title": "Athlete-event records"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "gridColor": "#E5E7EB",
+      "labelFontSize": 12,
+      "titleFontSize": 13
+    },
+    "title": {
+      "fontSize": 19,
+      "subtitleFontSize": 12,
+      "anchor": "start"
+    }
+  }
+}

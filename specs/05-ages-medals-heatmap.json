@@ -1,0 +1,97 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "Which Ages Win the Most Medals?",
+      "subtitle": ["Share of Olympic athlete-event entries that won a medal", "Blank tiles have fewer than 30 entries"],
+      "anchor": "start",
+      "fontSize": 18,
+      "subtitleFontSize": 12,
+      "subtitleColor": "#666",
+      "offset": 14
+    },
+    "width": {"step": 62},
+    "height": {"step": 52},
+    "data": {
+      "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv",
+      "format": {"type": "csv", "parse": {"Age": "number"}}
+    },
+    "transform": [
+      {
+        "filter": {
+          "field": "Sport",
+          "oneOf": ["Athletics", "Swimming", "Gymnastics", "Weightlifting", "Cycling", "Rowing", "Shooting", "Fencing", "Wrestling", "Boxing", "Judo", "Tennis"]
+        }
+      },
+      {"filter": "isValid(datum.Age) && datum.Age >= 10 && datum.Age <= 80"},
+      {"calculate": "datum.Age < 20 ? 'Under 20' : datum.Age < 25 ? '20–24' : datum.Age < 30 ? '25–29' : '30+'", "as": "AgeGroup"},
+      {"calculate": "datum.Medal != null && datum.Medal != 'NA' && datum.Medal != '' ? 1 : 0", "as": "MedalWon"},
+      {
+        "aggregate": [
+          {"op": "mean", "field": "MedalWon", "as": "MedalRate"},
+          {"op": "count", "as": "Entries"}
+        ],
+        "groupby": ["Sport", "AgeGroup"]
+      },
+      {"filter": "datum.Entries >= 30"}
+    ],
+    "encoding": {
+      "x": {
+        "field": "Sport",
+        "type": "nominal",
+        "sort": "ascending",
+        "title": null,
+        "scale": {"paddingInner": 0.08, "paddingOuter": 0},
+        "axis": {"orient": "top", "labelAngle": -35, "labelFontSize": 12, "domain": false, "ticks": false, "labelPadding": 6}
+      },
+      "y": {
+        "field": "AgeGroup",
+        "type": "ordinal",
+        "sort": ["Under 20", "20–24", "25–29", "30+"],
+        "title": null,
+        "scale": {"paddingInner": 0.08, "paddingOuter": 0},
+        "axis": {"labelFontSize": 12, "domain": false, "ticks": false, "labelPadding": 8}
+      },
+      "tooltip": [
+        {"field": "Sport", "type": "nominal"},
+        {"field": "AgeGroup", "type": "ordinal", "title": "Age group"},
+        {"field": "MedalRate", "type": "quantitative", "title": "Medal-winning rate", "format": ".1%"},
+        {"field": "Entries", "type": "quantitative", "title": "Entries", "format": ","}
+      ]
+    },
+    "layer": [
+      {
+        "mark": {"type": "rect", "cornerRadius": 6},
+        "encoding": {
+          "color": {
+            "field": "MedalRate",
+            "type": "quantitative",
+            "scale": {"scheme": "tealblues", "domain": [0.05, 0.3], "clamp": true},
+            "legend": {
+              "title": "Medal-winning rate",
+              "format": ".0%",
+              "orient": "bottom",
+              "direction": "horizontal",
+              "gradientLength": 220,
+              "titleFontSize": 11,
+              "titleLimit": 200
+            }
+          }
+        }
+      },
+      {
+        "mark": {"type": "text", "fontSize": 11, "fontWeight": "bold"},
+        "encoding": {
+          "text": {"field": "MedalRate", "type": "quantitative", "format": ".0%"},
+          "color": {
+            "condition": {"test": "datum.MedalRate > 0.18", "value": "white"},
+            "value": "#1f3b4d"
+          }
+        }
+      }
+    ],
+    "config": {
+      "view": {"stroke": null},
+      "font": "Helvetica, Arial, sans-serif",
+      "axis": {"grid": false}
+    }
+  }
