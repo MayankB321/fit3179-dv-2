@@ -37,26 +37,36 @@ function renderStory() {
 
   const footer = document.createElement("footer");
   footer.className = "colophon";
-  const source = document.createElement("a");
-  source.href = ATHLETE_EVENTS_SOURCE;
-  source.textContent = "Olympic history athlete-events";
-  source.rel = "noreferrer";
-  source.target = "_blank";
-  const extra = document.createElement("a");
-  extra.href = "https://github.com/MayankB321/fit3179-dv-2-datasets";
-  extra.textContent = "NBA player-seasons and the host-city list";
-  extra.rel = "noreferrer";
-  extra.target = "_blank";
+  const source = externalLink(ATHLETE_EVENTS_SOURCE, "Olympic history athlete-events");
+  const nba = externalLink(
+    "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats?resource=download",
+    "NBA player-seasons"
+  );
+  const stored = externalLink(
+    "https://github.com/MayankB321/fit3179-dv-2-datasets",
+    "fit3179-dv-2-datasets"
+  );
   footer.append(
     document.createTextNode("Olympic charts use "),
     source,
     document.createTextNode(
       ", 1896–2016. One row is one athlete in one event, not one person. The host-city map and the NBA chart use "
     ),
-    extra,
+    nba,
+    document.createTextNode(" and the host-city list. The datasets used are stored in "),
+    stored,
     document.createTextNode(".")
   );
   main.append(footer);
+}
+
+function externalLink(href, text) {
+  const link = document.createElement("a");
+  link.href = href;
+  link.textContent = text;
+  link.rel = "noreferrer";
+  link.target = "_blank";
+  return link;
 }
 
 function renderChapter(chapter) {
