@@ -37,27 +37,51 @@ function renderStory() {
 
   const footer = document.createElement("footer");
   footer.className = "colophon";
-  const source = externalLink(ATHLETE_EVENTS_SOURCE, "Olympic history athlete-events");
-  const nba = externalLink(
-    "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats?resource=download",
-    "NBA player-seasons"
+  footer.setAttribute("aria-labelledby", "references-heading");
+
+  const heading = document.createElement("p");
+  heading.className = "kicker";
+  heading.id = "references-heading";
+  heading.textContent = "References";
+
+  const list = document.createElement("ul");
+  list.className = "refs";
+  list.append(
+    referenceItem("1. Olympic charts", [
+      externalLink(ATHLETE_EVENTS_SOURCE, "Olympic history athlete-events"),
+      ", 1896–2016.",
+    ]),
+    referenceItem("2. Host-city map and NBA chart", [
+      externalLink(
+        "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats?resource=download",
+        "NBA player-seasons"
+      ),
+      " and the host-city list.",
+    ]),
+    referenceItem("Dataset copies and processing", [
+      "Stored in ",
+      externalLink(
+        "https://github.com/MayankB321/fit3179-dv-2-datasets",
+        "fit3179-dv-2-datasets"
+      ),
+      ".",
+    ])
   );
-  const stored = externalLink(
-    "https://github.com/MayankB321/fit3179-dv-2-datasets",
-    "fit3179-dv-2-datasets"
-  );
-  footer.append(
-    document.createTextNode("Olympic charts use "),
-    source,
-    document.createTextNode(
-      ", 1896–2016. One row is one athlete in one event, not one person. The host-city map and the NBA chart use "
-    ),
-    nba,
-    document.createTextNode(" and the host-city list. The datasets used are stored in "),
-    stored,
-    document.createTextNode(".")
-  );
+
+  footer.append(heading, list);
   main.append(footer);
+}
+
+function referenceItem(use, parts) {
+  const item = document.createElement("li");
+  const label = document.createElement("span");
+  label.className = "ref-use";
+  label.textContent = use;
+  item.append(label);
+  for (const part of parts) {
+    item.append(typeof part === "string" ? document.createTextNode(part) : part);
+  }
+  return item;
 }
 
 function externalLink(href, text) {
