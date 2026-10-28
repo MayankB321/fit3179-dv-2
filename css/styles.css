@@ -203,7 +203,7 @@ h2 {
 }
 
 .ref-use::after {
-  content: " — ";
+  content: " ";
   font-weight: 400;
   color: var(--muted);
 }

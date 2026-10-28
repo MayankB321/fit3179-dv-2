@@ -47,19 +47,21 @@ function renderStory() {
   const list = document.createElement("ul");
   list.className = "refs";
   list.append(
-    referenceItem("1. Olympic charts", [
-      externalLink(ATHLETE_EVENTS_SOURCE, "Olympic history athlete-events"),
-      ", 1896–2016.",
+    referenceItem("[1]", [
+      "R. Griffin, “Olympic history: longitudinal data scraped from www.sports-reference.com,” GitHub, May 2018. [Online]. Available: ",
+      externalLink(ATHLETE_EVENTS_SOURCE, ATHLETE_EVENTS_SOURCE),
+      ". [Accessed: Oct. 28, 2026].",
     ]),
-    referenceItem("2. Host-city map and NBA chart", [
+    referenceItem("[2]", [
+      "S. Datta, “NBA stats (1947–present),” Kaggle, 2021. [Online]. Available: ",
       externalLink(
-        "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats?resource=download",
-        "NBA player-seasons"
+        "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats",
+        "https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats"
       ),
-      " and the host-city list.",
+      ". [Accessed: Oct. 28, 2026].",
     ]),
-    referenceItem("Dataset copies and processing", [
-      "Stored in ",
+    referenceItem("Dataset copies and processing:", [
+      "Host-city list and other processed copies stored in ",
       externalLink(
         "https://github.com/MayankB321/fit3179-dv-2-datasets",
         "fit3179-dv-2-datasets"
