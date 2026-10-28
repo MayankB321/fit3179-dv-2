@@ -108,5 +108,27 @@ export const story = {
       note: "Two-year bins with fewer than 100 records are hidden, so the women's line stops earlier.",
       spec: "specs/09-medal-rate-by-sex.json",
     },
+    {
+      number: "10",
+      id: "nba-player-profiles",
+      kicker: "Nba Player profiles",
+      nav: "idk",
+      heading: "Nba player profiles",
+      prose:
+        "Tkajsndkmja,sndkjas.",
+      note: "Two-year bins with fewer than 100 records are hidden, so the women's line stops earlier.",
+      spec: "specs/10-nba-player-profiles.json",
+    },
+    {
+      number: "11",
+      id: "nba-asd",
+      kicker: "asdasd",
+      nav: "idk",
+      heading: "asdasd",
+      prose:
+        "Tkajsndkmja,sndkjas.",
+      note: "Two-year bins with fewer than 100 records are hidden, so the women's line stops earlier.",
+      spec: "specs/11-olympic-cities.json",
+    },
   ],
 };

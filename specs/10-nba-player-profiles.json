@@ -1,0 +1,74 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "When do NBA players peak?",
+      "subtitle": "Individual player seasons (jittered points) with average trend overlay"
+    },
+    "width": 700,
+    "height": 380,
+    "params": [
+      {
+        "name": "stat_sel",
+        "value": "pts_per_game",
+        "bind": {
+          "input": "select",
+          "name": "Stat: ",
+          "options": ["pts_per_game", "trb_per_game", "ast_per_game", "stl_per_game", "blk_per_game", "x3p_per_game"],
+          "labels": ["Points", "Rebounds", "Assists", "Steals", "Blocks", "3-pointers made"]
+        }
+      },
+      {
+        "name": "from_season",
+        "value": 2010,
+        "bind": { "input": "range", "min": 1980, "max": 2026, "step": 1, "name": "Seasons from: " }
+      }
+    ],
+    "data": {
+      "url": "https://raw.githubusercontent.com/MayankB321/fit3179-dv-2-datasets/main/datasets/NBA/Player%20Per%20Game.csv",
+      "format": { "type": "csv" }
+    },
+    "transform": [
+      { "filter": "datum.season >= from_season && datum.g >= 20 && datum.mp_per_game >= 10 && datum.age >= 19 && datum.age <= 38" },
+      {
+        "window": [{ "op": "row_number", "as": "rn" }],
+        "groupby": ["season", "player_id"]
+      },
+      { "filter": "datum.rn == 1" },
+      { "calculate": "datum[stat_sel]", "as": "metric" },
+      { "calculate": "datum.age + (random() - 0.5) * 0.4", "as": "age_jitter" }
+    ],
+    "layer": [
+      {
+        "mark": { "type": "point", "filled": true, "opacity": 0.3, "size": 25, "color": "#74c0fc" },
+        "encoding": {
+          "x": {
+            "field": "age_jitter",
+            "type": "quantitative",
+            "title": "Player age (years)",
+            "scale": { "domain": [18.5, 38.5] }
+          },
+          "y": { "field": "metric", "type": "quantitative", "title": "Per game (selected stat)" },
+          "tooltip": [
+            { "field": "player", "type": "nominal", "title": "Player" },
+            { "field": "season", "type": "ordinal", "title": "Season" },
+            { "field": "age", "type": "quantitative", "title": "Age" },
+            { "field": "metric", "type": "quantitative", "title": "Stat Value" }
+          ]
+        }
+      },
+      {
+        "transform": [
+          {
+            "aggregate": [{ "op": "mean", "field": "metric", "as": "mean_metric" }],
+            "groupby": ["age"]
+          }
+        ],
+        "mark": { "type": "line", "color": "#1098ad", "strokeWidth": 3.5, "point": true },
+        "encoding": {
+          "x": { "field": "age", "type": "quantitative" },
+          "y": { "field": "mean_metric", "type": "quantitative" }
+        }
+      }
+    ],
+    "config": { "view": { "stroke": null } }
+  }

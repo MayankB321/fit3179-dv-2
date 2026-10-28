@@ -1,0 +1,65 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+      "text": "Olympic Host Cities Around the World",
+      "subtitle": "Uniform geographic dot map"
+    },
+    "width": 800,
+    "height": 450,
+    "projection": {
+      "type": "naturalEarth1"
+    },
+    "data": {
+      "url": "https://raw.githubusercontent.com/MayankB321/fit3179-dv-2-datasets/main/datasets/olympic_host_cities.csv",
+      "format": { "type": "csv" }
+    },
+    "transform": [
+      {
+        "calculate": "toNumber(datum.count)",
+        "as": "host_count"
+      }
+    ],
+    "layer": [
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
+          "format": { "type": "topojson", "feature": "countries" }
+        },
+        "mark": {
+          "type": "geoshape",
+          "fill": "#e0e0e0",
+          "stroke": "#ffffff",
+          "strokeWidth": 0.8
+        }
+      },
+      {
+        "mark": {
+          "type": "circle",
+          "size": 80,
+          "fill": "#2980b9",
+          "opacity": 0.85,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "encoding": {
+          "longitude": {
+            "field": "longitude",
+            "type": "quantitative"
+          },
+          "latitude": {
+            "field": "latitude",
+            "type": "quantitative"
+          },
+          "tooltip": [
+            { "field": "city", "type": "nominal", "title": "City" },
+            { "field": "country", "type": "nominal", "title": "Country" },
+            { "field": "host_count", "type": "quantitative", "title": "Host Count" },
+            { "field": "games", "type": "nominal", "title": "Editions" }
+          ]
+        }
+      }
+    ],
+    "config": {
+      "view": { "stroke": null }
+    }
+  }
