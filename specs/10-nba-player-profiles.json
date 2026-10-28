@@ -1,8 +1,8 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": {
-      "text": "When do NBA players peak?",
-      "subtitle": "Individual player seasons (jittered points) with average trend overlay"
+      "text": "When Do NBA Players Peak?",
+      "subtitle": "One point per player-season. The line is the average at that age."
     },
     "width": 700,
     "height": 380,
@@ -52,7 +52,7 @@
             { "field": "player", "type": "nominal", "title": "Player" },
             { "field": "season", "type": "ordinal", "title": "Season" },
             { "field": "age", "type": "quantitative", "title": "Age" },
-            { "field": "metric", "type": "quantitative", "title": "Stat Value" }
+            { "field": "metric", "type": "quantitative", "title": "Per game", "format": ".1f" }
           ]
         }
       },

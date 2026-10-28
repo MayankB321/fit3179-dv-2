@@ -3,7 +3,7 @@
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": {
       "text": "Are Older Athletes More Successful?",
-      "subtitle": "Medal-winning rate by age and Olympic season"
+      "subtitle": "Medal-winning rate by age and season. Art competitions and thin bins are kept."
     },
     "data": {
       "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv"

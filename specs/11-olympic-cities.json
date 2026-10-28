@@ -1,8 +1,8 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": {
-      "text": "Olympic Host Cities Around the World",
-      "subtitle": "Uniform geographic dot map"
+      "text": "Where Were the Games Held?",
+      "subtitle": "One dot per host city, all the same size. Hover for how many editions."
     },
     "width": 800,
     "height": 450,
@@ -53,7 +53,7 @@
           "tooltip": [
             { "field": "city", "type": "nominal", "title": "City" },
             { "field": "country", "type": "nominal", "title": "Country" },
-            { "field": "host_count", "type": "quantitative", "title": "Host Count" },
+            { "field": "host_count", "type": "quantitative", "title": "Times hosted" },
             { "field": "games", "type": "nominal", "title": "Editions" }
           ]
         }

@@ -1,8 +1,8 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "title": {
-      "text": "Are Older Athletes More Successful?",
-      "subtitle": "Medal-winning rate by age (bins with 100+ records, art competitions excluded)"
+      "text": "Does That Climb Hold After the Cut?",
+      "subtitle": "Same medal rate, once art competitions are out and bins under 100 records are hidden"
     },
     "data": {
       "url": "https://raw.githubusercontent.com/rgriff23/Olympic_history/master/data/athlete_events.csv"

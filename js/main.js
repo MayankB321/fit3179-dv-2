@@ -21,7 +21,11 @@ function renderStory() {
   const title = document.createElement("h1");
   title.textContent = story.title;
 
-  header.append(eyebrow, title);
+  const dek = document.createElement("p");
+  dek.className = "dek";
+  dek.textContent = story.dek;
+
+  header.append(eyebrow, title, dek);
 
   const chapters = document.createElement("div");
   chapters.className = "chapters";
@@ -38,12 +42,19 @@ function renderStory() {
   source.textContent = "Olympic history athlete-events";
   source.rel = "noreferrer";
   source.target = "_blank";
+  const extra = document.createElement("a");
+  extra.href = "https://github.com/MayankB321/fit3179-dv-2-datasets";
+  extra.textContent = "NBA player-seasons and the host-city list";
+  extra.rel = "noreferrer";
+  extra.target = "_blank";
   footer.append(
-    document.createTextNode("Data: "),
+    document.createTextNode("Olympic charts use "),
     source,
     document.createTextNode(
-      ", 1896–2016. Counts are athlete-event records, not unique people. Add the next chart by dropping a Vega-Lite file in specs/ and pointing a chapter at it in js/story.js."
-    )
+      ", 1896–2016. One row is one athlete in one event, not one person. The host-city map and the NBA chart use "
+    ),
+    extra,
+    document.createTextNode(".")
   );
   main.append(footer);
 }
